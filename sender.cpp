@@ -3,6 +3,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstdio>
+#include "protocol.h"
 
 int main(int argc, char **argv)
 {
@@ -44,29 +45,25 @@ int main(int argc, char **argv)
     }
 
     char send_buf[4096];
-    size_t byte_counter = 0;
+    size_t byte_counter;
 
     while (true)
     {
         size_t read_bytes = fread(send_buf, 1, sizeof(send_buf), send_file);
         if (read_bytes == 0)
             break;
+        byte_counter += read_bytes;
 
-        size_t sent = 0;
-        while (sent < read_bytes)
+        if (!send_all(send_fd, send_buf, read_bytes))
         {
-            ssize_t r = send(send_fd, send_buf + sent, read_bytes - sent, MSG_NOSIGNAL);
-            if (r < 0)
-            {
-                perror("send");
-                fclose(send_file);
-                close(send_fd);
-                return 1;
-            }
-            sent += static_cast<size_t>(r);
+            perror("could not send bytes");
+            fclose(send_file);
+            close(send_fd);
+            break;
         }
-        byte_counter += sent;
     }
+
+    printf("\nread %zu bytes\n", byte_counter);
 
     if (ferror(send_file))
     {
@@ -76,7 +73,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    printf("sent %zu bytes\n", byte_counter);
     fclose(send_file);
     close(send_fd);
     return 0;
