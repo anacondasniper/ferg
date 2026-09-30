@@ -8,9 +8,9 @@ Run `receiver` on one machine and `sender` on another, and a file goes from one 
 
 - [x] Receiver: listens on port 7000, accepts a connection, reads the stream
 - [x] Receiver writes to a file
-- [ ] Sender
-- [ ] Protocol header (filename and size)
-- [ ] Error handling
+- [x] Sender
+- [x] Protocol header (filename and size)
+- [x] Error handling
 
 ## Build
 
