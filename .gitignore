@@ -1,0 +1,20 @@
+# compiled programs (no extension, so list them by name)
+receiver
+reciever
+sender
+
+# test files
+out.bin
+big.bin
+*.bin
+
+# build leftovers
+*.o
+a.out
+core
+vgcore.*
+
+# editor
+*.swp
+*~
+.cache/
