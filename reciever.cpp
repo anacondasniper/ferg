@@ -48,9 +48,15 @@ int main()
         return 1;
     }
     // 6. read what they send - recv() - gives bytes of message back
-    char recv_buf[4096];
-    size_t byte_counter = 0;
-    while (true)
+    FILE* recv_file = fopen("out.bin", "wb");
+	if (!recv_file)
+	{
+		perror("fopen");
+		return 1;
+	}
+	char recv_buf[4096];
+	size_t byte_counter = 0;
+	while (true)
     {
         ssize_t recv_byte_t = recv(client_fd, recv_buf, sizeof(recv_buf), 0);
         if (recv_byte_t == 0)
@@ -62,12 +68,13 @@ int main()
         }
         else if (recv_byte_t > 0)
         {
-            fwrite(recv_buf, 1, recv_byte_t, stdout);
+			fwrite(recv_buf, 1, recv_byte_t, recv_file);
             byte_counter += recv_byte_t;
         }
     }
     printf("\nrecieved %zu bytes\n", byte_counter);
     // 8. close both sockets
+	fclose(recv_file);
     close(recv_fd);
     close(client_fd);
 }

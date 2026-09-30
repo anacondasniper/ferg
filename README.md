@@ -7,7 +7,7 @@ Run `receiver` on one machine and `sender` on another, and a file goes from one 
 ## Status
 
 - [x] Receiver: listens on port 7000, accepts a connection, reads the stream
-- [ ] Receiver writes to a file
+- [x] Receiver writes to a file
 - [ ] Sender
 - [ ] Protocol header (filename and size)
 - [ ] Error handling
